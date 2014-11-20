@@ -1,6 +1,6 @@
 #!/bin/bash
 # COMP4262 project - smartdelete
-# by Ben Murphy, Kieran Blazier, and 
+# by Ben Murphy, Kieran Blazier, and Evan
 # check if user is root or not, and assign recycle bin path accordingly
 
 if [ $HOME = "/" ]; then
