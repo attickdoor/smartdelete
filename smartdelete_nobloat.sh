@@ -72,11 +72,12 @@ function expand_args(){
 			fi
 		done
 		if [ -f .tmp ]; then
-			readarray raw_path < .tmp
+			raw_path=(`sort .tmp | uniq`)
+			rm -f .tmp
 		else
+			echo "No valid files specified!"
 			exit 0
 		fi
-		rm -f .tmp
 		let numargs=${#raw_path[*]}-1
 		for i in `seq 0 1 $numargs`; do
 			files[$i]=`readlink -f ${raw_path[$i]} | sed "s/\//\n/g" | tail -1`
@@ -114,13 +115,14 @@ function restore_operations(){
 			restore_path=`grep -e "${files[$i]}_${num}$" ${bin_path}/.smartdelete | sed "s/${files[$i]}_${num}$//g"`
 		fi
 		if [ -f ${restore_path}/${files[$i]} ]; then
-			echo "File ${files[$i]} already exists, appending _restored to end of file..."
+			filename=${filename}_restored
 			while [ -f ${restore_path}/${filename} ]; do
 				filename=${filename}_restored
 			done
+			echo "File ${files[$i]} already exists, appending _restored to the end of the filename..."
 		fi
 		move_text_values_down ${files[$i]} $num
-		mv ${bin_path}/${files[$i]}_${num} ${restore_path}/$filename
+		mv ${bin_path}/${files[$i]}_${num} ${restore_path}/${filename}
 		echo "File ${filename} successfully restored to ${restore_path}."
 		move_file_values_down ${files[$i]} $num
 	done
