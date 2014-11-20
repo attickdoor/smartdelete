@@ -238,6 +238,7 @@ function minus_l(){
 	else
 		echo "Files inside the recycle bin are: "
 		find ${bin_path}/* | sed "s/_[0-9]*$//g" | sed "s|^${bin_path}/||g" | uniq
+		find ${bin_path}/.* -maxdepth 0 | sed "s/_[0-9]*$//g" | sed "s|^${bin_path}/||g" | uniq
 	fi
 }
 
